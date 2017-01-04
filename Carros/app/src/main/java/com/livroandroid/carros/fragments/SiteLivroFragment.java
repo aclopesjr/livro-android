@@ -5,14 +5,17 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.livroandroid.carros.R;
+import com.livroandroid.carros.fragments.dialog.AboutDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +49,16 @@ public class SiteLivroFragment extends BaseFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("livroandroid", "webview url: " + url.toString());
+                if (url != null && url.endsWith("sobre.htm")) {
+                    AboutDialog.showAbout(getFragmentManager());
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
 
