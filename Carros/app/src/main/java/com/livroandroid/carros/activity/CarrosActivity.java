@@ -25,10 +25,13 @@ public class CarrosActivity extends BaseActivity {
 
         // Adiciona o fragment com o mesmo Bundle (args) da intent
         if (savedInstanceState == null) {
+
             // Cria uma instância do fragment e configura os argumentos
             CarrosFragment frag = new CarrosFragment();
+
             // Dentre os argumentos que foram passados para a activity, está o tipo do carro
             frag.setArguments(getIntent().getExtras());
+
             // Adiciona o fragment no layout de marcação
             getSupportFragmentManager().beginTransaction().add(R.id.container, frag).commit();
         }
