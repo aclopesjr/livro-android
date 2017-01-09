@@ -17,7 +17,7 @@ public class CarroActivity extends BaseActivity {
         setupToolbar();
 
         // Título da Toolbar como a action bar
-        Carro carro = (Carro)getIntent().getSerializableExtra("carro");
+        Carro carro = (Carro)getIntent().getParcelableExtra("carro");
         getSupportActionBar().setTitle(carro.nome);
 
         // Liga o botão up navigation para voltar
