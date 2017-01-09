@@ -1,5 +1,6 @@
 package com.livroandroid.carros.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.livroandroid.carros.R;
+import com.livroandroid.carros.activity.CarroActivity;
 import com.livroandroid.carros.adapter.CarroAdapter;
 import com.livroandroid.carros.domain.Carro;
 import com.livroandroid.carros.domain.CarroService;
@@ -87,8 +89,9 @@ public class CarrosFragment extends BaseFragment {
                 // Carro selecionado
                 Carro carro = carros.get(idx);
 
-                // Mostra um alerta
-                Toast.makeText(getContext(), "Carro: " + carro.nome, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), CarroActivity.class);
+                intent.putExtra("carro", carro);
+                startActivity(intent);
             }
         };
     }
