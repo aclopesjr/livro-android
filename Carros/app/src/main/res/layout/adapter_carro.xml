@@ -36,7 +36,7 @@
                 android:layout_width="@dimen/img_carro_adapter_width"
                 android:layout_height="@dimen/img_carro_adapter_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="6dp" />
 
             <ProgressBar
                 android:id="@+id/progressImg"
