@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.livroandroid.carros.R;
 import com.livroandroid.carros.adapter.TabsAdapter;
@@ -17,6 +18,13 @@ public class MainActivity extends BaseActivity {
         setupToolbar();
         setupNavDrawer();
         setupViewPagerTabs();
+
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snack(view, "Exemplo de FAB button!");
+            }
+        });
     }
 
     private void setupViewPagerTabs() {
