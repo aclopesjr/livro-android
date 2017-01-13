@@ -2,21 +2,36 @@ package com.livroandroid.carros.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-/**
- * Created by Antonio on 09/01/2017.
- */
+import com.google.gson.annotations.SerializedName;
 
 public class Carro implements Parcelable {
     private static final long serialVersionUID = 6601006766832473959L;
+
+    @SerializedName("id")
     public long id;
+
+    @SerializedName("tipo")
     public String tipo;
+
+    @SerializedName("nome")
     public String nome;
+
+    @SerializedName("desc")
     public String desc;
+
+    @SerializedName("url_foto")
     public String urlFoto;
+
+    @SerializedName("url_info")
     public String urlInfo;
+
+    @SerializedName("url_video")
     public String urlVideo;
+
+    @SerializedName("latitude")
     public String latitude;
+
+    @SerializedName("longitude")
     public String longitude;
 
     @Override
