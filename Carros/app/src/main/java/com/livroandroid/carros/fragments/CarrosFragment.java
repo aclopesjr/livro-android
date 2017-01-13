@@ -1,5 +1,6 @@
 package com.livroandroid.carros.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.livroandroid.carros.adapter.CarroAdapter;
 import com.livroandroid.carros.domain.Carro;
 import com.livroandroid.carros.domain.CarroService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,6 +31,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CarrosFragment extends BaseFragment {
+
+    private ProgressDialog progressDialog;
     protected RecyclerView recyclerView;
 
     // Tipo de carro passado pelos argumentos
@@ -72,12 +77,35 @@ public class CarrosFragment extends BaseFragment {
         taskCarros();
     }
 
-    private void taskCarros() {
-        // Busca os carros pelo tipo
-        this.carros = CarroService.getCarros(getContext(), this.tipo);
 
-        // É aqui que utiliza o adapter. O adapeter fornece o conteúdo para a lista
-        recyclerView.setAdapter(new CarroAdapter(getContext(), this.carros, onClickCarro()));
+
+    private void taskCarros() {
+
+        progressDialog = ProgressDialog.show(getActivity(), "Atualizando", "Por favor, aguarde!", false, true);
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    // Busca os carros pelo tipo
+                    carros = CarroService.getCarros(getContext(), tipo);
+
+                    // Atualiza a lista na UI Thread
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // É aqui que utiliza o adapter. O adapeter fornece o conteúdo para a lista
+                            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+
+                            progressDialog.dismiss();
+                        }
+                    });
+                } catch (IOException e) {
+                    Log.e("livro", e.getMessage(), e);
+                } finally {
+
+                }
+            }
+        }.start();
     }
 
     private CarroAdapter.CarroOnClickListener onClickCarro() {
