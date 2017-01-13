@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.livroandroid.carros.CarrosApplication;
 import com.livroandroid.carros.R;
 import com.livroandroid.carros.domain.Carro;
 import com.livroandroid.carros.domain.CarroDB;
@@ -94,6 +95,8 @@ public class CarroFragment extends BaseFragment {
                     snack(getView(), "Carro removido dos favoritos!");
                 }
                 setFabColor(response);
+
+                CarrosApplication.getInstance().getBus().post("refresh");
             }
         };
     }
