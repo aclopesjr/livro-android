@@ -9,6 +9,8 @@ import android.view.View;
 import com.livroandroid.carros.R;
 import com.livroandroid.carros.adapter.TabsAdapter;
 
+import livroandroid.lib.utils.Prefs;
+
 public class MainActivity extends BaseActivity {
 
     @Override
@@ -32,6 +34,22 @@ public class MainActivity extends BaseActivity {
         final ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
+
+        // Lê o índice da última tab utilizada no aplicativo
+        int index = Prefs.getInteger(getContext(), "index");
+        viewPager.setCurrentItem(index);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+
+            @Override
+            public void onPageSelected(int position) {
+                Prefs.setInteger(getContext(), "index", viewPager.getCurrentItem());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
 
         // Tabs
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
