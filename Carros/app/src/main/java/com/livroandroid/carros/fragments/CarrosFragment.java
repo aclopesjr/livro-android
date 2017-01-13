@@ -2,6 +2,7 @@ package com.livroandroid.carros.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import com.livroandroid.carros.domain.CarroService;
 import java.io.IOException;
 import java.util.List;
 
+import livroandroid.lib.utils.AndroidUtils;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -32,7 +35,6 @@ import java.util.List;
  */
 public class CarrosFragment extends BaseFragment {
 
-    private ProgressDialog progressDialog;
     protected RecyclerView recyclerView;
 
     // Tipo de carro passado pelos argumentos
@@ -77,35 +79,8 @@ public class CarrosFragment extends BaseFragment {
         taskCarros();
     }
 
-
-
     private void taskCarros() {
-
-        progressDialog = ProgressDialog.show(getActivity(), "Atualizando", "Por favor, aguarde!", false, true);
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    // Busca os carros pelo tipo
-                    carros = CarroService.getCarros(getContext(), tipo);
-
-                    // Atualiza a lista na UI Thread
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // É aqui que utiliza o adapter. O adapeter fornece o conteúdo para a lista
-                            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-
-                            progressDialog.dismiss();
-                        }
-                    });
-                } catch (IOException e) {
-                    Log.e("livro", e.getMessage(), e);
-                } finally {
-
-                }
-            }
-        }.start();
+        new GetCarrosTask().execute();
     }
 
     private CarroAdapter.CarroOnClickListener onClickCarro() {
@@ -120,5 +95,33 @@ public class CarrosFragment extends BaseFragment {
                 startActivity(intent);
             }
         };
+    }
+
+    private class GetCarrosTask extends AsyncTask<Void, Void, List<Carro>> {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(getActivity(), "Atualizando", "Por favor, aguarde!", false, true);
+        }
+
+        @Override
+        protected List<Carro> doInBackground(Void... voids) {
+            try {
+                return CarroService.getCarros(getContext(), tipo);
+            } catch (IOException e) {
+                Log.e("livro", e.getMessage(), e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Carro> carros) {
+            if (carros != null) {
+                CarrosFragment.this.carros = carros;
+                recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+                progressDialog.dismiss();
+            }
+        }
     }
 }
