@@ -21,7 +21,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -32,8 +32,10 @@ public class TabsAdapter extends FragmentPagerAdapter {
                 return context.getString(R.string.classicos);
             case 1:
                 return context.getString(R.string.esportivos);
-            default:
+            case 2:
                 return context.getString(R.string.luxo);
+            default:
+                return context.getString(R.string.favoritos);
         }
     }
 
@@ -48,8 +50,11 @@ public class TabsAdapter extends FragmentPagerAdapter {
             case 1:
                 fragment = CarrosFragment.newInstance(R.string.esportivos);
                 break;
-            default:
+            case 2:
                 fragment = CarrosFragment.newInstance(R.string.luxo);
+                break;
+            default:
+                fragment = CarrosFragment.newInstance(R.string.favoritos);
                 break;
         }
         return fragment;

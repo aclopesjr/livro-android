@@ -5,9 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.livroandroid.carros.R;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import livroandroid.lib.utils.FileUtils;
 import livroandroid.lib.utils.HttpHelper;
 
 /**
@@ -19,6 +17,12 @@ public class CarroService {
     private static final String URL = "http://www.livroandroid.com.br/livro/carros/carros_{tipo}.json";
 
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
+
+        if (tipo == R.string.favoritos) {
+            CarroDB carroDB = new CarroDB(context);
+            return carroDB.findAll();
+        }
+
         String tipoString = getTipo(tipo);
         String url = URL.replace("{tipo}", tipoString);
 
@@ -27,7 +31,6 @@ public class CarroService {
         String json = httpHelper.doGet(url);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         Gson gson = gsonBuilder.create();
 
         RootCar rootCar = gson.fromJson(json, RootCar.class);
@@ -40,8 +43,10 @@ public class CarroService {
                 return "classicos";
             case R.string.esportivos:
                 return "esportivos";
-            default:
+            case R.string.luxo:
                 return "luxo";
+            default:
+                return "favoritos";
         }
     }
 }
