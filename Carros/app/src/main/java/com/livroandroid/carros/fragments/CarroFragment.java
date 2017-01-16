@@ -20,6 +20,8 @@ import com.livroandroid.carros.domain.Carro;
 import com.livroandroid.carros.domain.CarroDB;
 import com.squareup.picasso.Picasso;
 
+import static com.livroandroid.carros.R.id.mapaFragment;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -35,11 +37,11 @@ public class CarroFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
 
         // Lê o objeto carro dos parâmetros
-        carro = (Carro)getArguments().getParcelable("carro");
+        this.carro = (Carro)getArguments().getParcelable("carro");
 
         // Atualiza a descrição do carro no TextView
-        TextView textView = (TextView)view.findViewById(R.id.tDesc);
-        textView.setText(carro.desc);
+        TextView descricaoTextView = (TextView)view.findViewById(R.id.tDesc);
+        descricaoTextView.setText(this.carro.desc);
 
         floatingActionButton = (FloatingActionButton)getActivity().findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +61,14 @@ public class CarroFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+
+        TextView positionTextView = (TextView)view.findViewById(R.id.tLatLng);
+        positionTextView.setText(this.carro.latitude + "/" + this.carro.longitude);
+
+        // Adicina o fragmento do Mapa
+        MapaFragment mapaFragment = new MapaFragment();
+        mapaFragment.setArguments(getArguments());
+        getChildFragmentManager().beginTransaction().replace(R.id.mapaFragment, mapaFragment).commit();
 
         return  view;
     }
