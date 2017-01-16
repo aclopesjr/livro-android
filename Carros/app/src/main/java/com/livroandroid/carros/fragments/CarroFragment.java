@@ -1,6 +1,8 @@
 package com.livroandroid.carros.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +46,17 @@ public class CarroFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 startTask("favoritos", taskFavoritar());
+            }
+        });
+
+        //
+        view.findViewById(R.id.imgPlayVideo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Intent para tocar o video no player nativo
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(carro.urlVideo), "Video/*");
+                startActivity(intent);
             }
         });
 
