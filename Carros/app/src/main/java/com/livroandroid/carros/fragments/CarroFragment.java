@@ -55,7 +55,7 @@ public class CarroFragment extends BaseFragment {
             public void onClick(View view) {
                 // Intent para tocar o video no player nativo
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(carro.urlVideo), "Video/*");
+                intent.setDataAndType(Uri.parse(carro.urlVideo), "video/*");
                 startActivity(intent);
             }
         });
